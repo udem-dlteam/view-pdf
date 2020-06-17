@@ -58,7 +58,8 @@
                (view-pdf-linux (path-expand path)))
               ((##string-prefix=? os "darwin")
                (view-pdf-macos (path-expand path)))
-              ((##string-prefix=? os "windows")
+              ((or (##string-prefix=? os "windows")
+                   (##string-prefix=? os "msys"))
                (view-pdf-windows (path-expand path)))
               (else
                (error "view-pdf does not know the OS" os)))))))
