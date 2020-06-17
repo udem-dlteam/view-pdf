@@ -24,7 +24,11 @@
          #f)))
 
     (define (view-pdf-fallback path)
-      (or (run-using-first-available '("evince" "okular" "qpdfview" "epdfview")
+      (or (run-using-first-available '("evince"
+                                       "okular"
+                                       "qpdfview"
+                                       "xdg-open"
+                                       "epdfview")
                                      path)
           (could-not-find-pdf-viewer)))
 
