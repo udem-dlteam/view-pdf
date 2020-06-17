@@ -47,7 +47,7 @@
 
     (define (view-pdf-windows path)
       (or (let ((r (shell-command
-                    (object->string path)
+                    path
                     #t)))
             (= 0 (car r)))
           (view-pdf-fallback path)))
