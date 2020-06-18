@@ -9,7 +9,7 @@
     (define (could-not-find-pdf-viewer)
       (error "a PDF viewer could not be found"))
 
-    (define (run-using-first-available programs path)
+    (define (open-using-first-available path programs)
       (call-with-current-continuation
        (lambda (return)
          (for-each (lambda (program)
@@ -24,25 +24,20 @@
          #f)))
 
     (define (view-pdf-fallback path)
-      (or (run-using-first-available '("evince"
+      (or (open-using-first-available path
+                                      '("evince"
                                        "okular"
                                        "qpdfview"
                                        "xdg-open"
-                                       "epdfview")
-                                     path)
+                                       "epdfview"))
           (could-not-find-pdf-viewer)))
 
     (define (view-pdf-linux path)
       (view-pdf-fallback path))
 
     (define (view-pdf-macos path)
-      (or (let ((r (shell-command
-                    (string-append
-                     "osascript -e \"tell application \\\"Preview\\\"\" -e \"open "
-                     (object->string (object->string path))
-                     "\" -e \"end tell\"")
-                    #t)))
-            (= 0 (car r)))
+      (or (open-using-first-available path
+                                      '("open"))
           (view-pdf-fallback path)))
 
     (define (view-pdf-windows path)
